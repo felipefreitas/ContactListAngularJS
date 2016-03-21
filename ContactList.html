@@ -37,7 +37,7 @@
 
 		$scope.removeContact = function (contacts) {
 			$scope.contacts = contacts.filter(function (contact) {
-				if(contact.checked) return contact;
+				if(!contact.checked) return contact;
 			})
 		};
 	});
