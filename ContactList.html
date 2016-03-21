@@ -4,13 +4,25 @@
 	<script type="text/javascript" src="lib/angular/angular.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css"/>
 	<style type="text/css">
-		.jumbotron {
-			width: 400px;
-			text-align: center;
-			margin-top: 20px;
-			margin-right: auto;
-			margin-left: auto;
-		}
+	.jumbotron {
+		width: 400px;
+		text-align: center;
+		margin-top: 20px;
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	.container {
+		width: 400px;
+		text-align: center;
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	th {
+		font-weight: normal;
+	}
+	
 	</style>
 	<script type="text/javascript">
 	angular.module("phoneList",[]);
@@ -46,33 +58,37 @@
 <body ng-controller="phoneListController">
 	<div class="jumbotron">
 		<h3>{{app}}</h3>
-		<div class="container">
-		<table class="table table-striped">
-			<thead>
-				<th></th>
-				<th>Name</th>
-				<th>Phone Number</th>
-				<th>Carrier</th>
-			</thead>
-			<tbody>
-				<tr ng-class="{success: contact.checked}" ng-repeat="contact in contacts">
-					<th><input type="checkbox" ng-model="contact.checked"/></th>
-					<th>{{contact.name}}</th>
-					<th>{{contact.phone}}</th>
-					<th>{{contact.carrier.name}}</th>
-				</tr>
-			</tbody>
-		</table>
-		<hr/>
-		{{contact}}
-		<input class="form-control" type="text" ng-model="contact.name" placeholder="Insert the name here"/>
-		<input class="form-control" type="text" ng-model="contact.phone" placeholder="Insert the phone here"/>
-		<select class="form-control" ng-model="contact.carrier" ng-options="carrier.name group by carrier.category for carrier in carriers">
-			<option value="">Select one carrier</option>
-		</select>
-		<button class="btn btn-primary btn-block" ng-click="addContact(contact)" ng-disabled="!contact.name||!contact.phone">Add New Contact</button>
-		<button class="btn btn-danger btn-block" ng-click="removeContact(contacts)">Remove Contact</button>
 	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<table class="table table-striped">
+					<thead>
+						<th></th>
+						<th>Name</th>
+						<th>Phone Number</th>
+						<th>Carrier</th>
+					</thead>
+					<tbody>
+						<tr ng-class="{success: contact.checked}" ng-repeat="contact in contacts">
+							<th><input type="checkbox" ng-model="contact.checked"/></th>
+							<th>{{contact.name}}</th>
+							<th>{{contact.phone}}</th>
+							<th>{{contact.carrier.name}}</th>
+						</tr>
+					</tbody>
+				</table>
+				<hr/>
+				{{contact}}
+				<input class="form-control" type="text" ng-model="contact.name" placeholder="Insert the name here"/>
+				<input class="form-control" type="text" ng-model="contact.phone" placeholder="Insert the phone here"/>
+				<select class="form-control" ng-model="contact.carrier" ng-options="carrier.name group by carrier.category for carrier in carriers">
+					<option value="">Select one carrier</option>
+				</select>
+				<button class="btn btn-primary btn-block" ng-click="addContact(contact)" ng-disabled="!contact.name||!contact.phone">Add New Contact</button>
+				<button class="btn btn-danger btn-block" ng-click="removeContact(contacts)">Remove Contact</button>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
