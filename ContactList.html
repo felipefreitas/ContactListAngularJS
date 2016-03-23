@@ -1,5 +1,6 @@
 <html ng-app="phoneList">
 <head>
+	<meta charset="UTF-8">
 	<title>Contact List - Angular JS Learns</title>
 	<script type="text/javascript" src="lib/angular/angular.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css"/>
@@ -22,7 +23,7 @@
 	th {
 		font-weight: normal;
 	}
-	
+
 	</style>
 	<script type="text/javascript">
 	angular.module("phoneList",[]);
@@ -30,11 +31,11 @@
 		$scope.app = "Phone List";
 
 		$scope.contacts = [
-		{ name: "Mary", phone: "31988888881" },
-		{ name: "John", phone: "31988888882" },
-		{ name: "Junior", phone: "31988888883" },
-		{ name: "Peter", phone: "31988888884" },
-		{ name: "James", phone: "31988888885" }];
+		{ name: "Mary", date: new Date(), phone: "31988888881" },
+		{ name: "John", date: new Date(), phone: "31988888882" },
+		{ name: "Junior", date: new Date(), phone: "31988888883" },
+		{ name: "Peter", date: new Date(), phone: "31988888884" },
+		{ name: "James", date: new Date(), phone: "31988888885" }];
 
 		$scope.carriers = [
 		{ name: "Verizone", code: 12, category: "Mobile" },
@@ -52,6 +53,12 @@
 				if(!contact.checked) return contact;
 			})
 		};
+
+		$scope.isContactChecked = function (contacts) {
+			return contacts.some(function (contact) {
+				return contact.checked
+			});
+		}
 	});
 	</script>
 </head>
@@ -62,31 +69,37 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
+				<input class="form-control" type="text" ng-model="search" placeholder="Search"/>
 				<table class="table table-striped">
 					<thead>
 						<th></th>
 						<th>Name</th>
 						<th>Phone Number</th>
+						<th>Date</th>
 						<th>Carrier</th>
 					</thead>
 					<tbody>
 						<tr ng-class="{success: contact.checked}" ng-repeat="contact in contacts">
 							<th><input type="checkbox" ng-model="contact.checked"/></th>
-							<th>{{contact.name}}</th>
+							<th>{{contact.name | uppercase}}</th>
 							<th>{{contact.phone}}</th>
-							<th>{{contact.carrier.name}}</th>
+							<th>{{contact.date | date:'dd/MM/yyyy'}}</th>
+							<th>{{contact.carrier.name | lowercase}}</th>
 						</tr>
 					</tbody>
 				</table>
 				<hr/>
-				{{contact}}
-				<input class="form-control" type="text" ng-model="contact.name" placeholder="Insert the name here"/>
-				<input class="form-control" type="text" ng-model="contact.phone" placeholder="Insert the phone here"/>
-				<select class="form-control" ng-model="contact.carrier" ng-options="carrier.name group by carrier.category for carrier in carriers">
-					<option value="">Select one carrier</option>
-				</select>
-				<button class="btn btn-primary btn-block" ng-click="addContact(contact)" ng-disabled="!contact.name||!contact.phone">Add New Contact</button>
-				<button class="btn btn-danger btn-block" ng-click="removeContact(contacts)">Remove Contact</button>
+				É válido: {{contactForm.$valid}}
+				É inválido: {{contactForm.$invalid}}
+				<form name="contactForm">
+					<input class="form-control" type="text" ng-model="contact.name"  placeholder="Insert the name here" ng-require="true" ng-minlengh="10"/>
+					<input class="form-control" type="text" ng-model="contact.phone"  placeholder="Insert the phone here" ng-require="true"/>
+					<select class="form-control" ng-model="contact.carrier" ng-options="carrier.name group by carrier.category for carrier in carriers">
+						<option value="">Select one carrier</option>
+					</select>
+				</form>
+				<button class="btn btn-primary btn-block" ng-click="addContact(contact)" ng-disabled="contactForm.$invalid">Add New Contact</button>
+				<button class="btn btn-danger btn-block" ng-click="removeContact(contacts)" ng-if="isContactChecked(contacts)">Remove Contact</button>
 			</div>
 		</div>
 	</div>
